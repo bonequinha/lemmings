@@ -6,9 +6,10 @@ public class MyNotepad {
 
     private MyNote[] notes;
     private int notesCount;
+    int minCount = 64;
 
     public MyNotepad(){
-        notes = new MyNote[50];
+        notes = new MyNote[minCount];
         InitializeNotes();
         notesCount = 0;
     }
