@@ -6,14 +6,15 @@ public class MyNotepad {
 
     private MyNote[] notes;
     private int notesCount;
-    int minCount = 64;
+    private int minCount = 32;
 
-    public MyNotepad(){
+    public MyNotepad() {
         notes = new MyNote[minCount];
         InitializeNotes();
         notesCount = 0;
     }
-    public int getNotesCount(){
+
+    public int getNotesCount() {
         return notesCount;
     }
 
@@ -23,15 +24,16 @@ public class MyNotepad {
 
     public boolean addNote(String text) {
         boolean result = false;
-        if(notesCount > 0.9 * notes.length) {
-            //добавим свободных мест.
-            // При добавлении 91 элемента в массив из 100, сделаем массив = 200
-            notes = Arrays.copyOf(notes, notes.length * 2);
-            InitializeNotes();
-        }
-        if(!text.equals("")) {
+        if (!text.equals("")) {
+            if (notesCount == notes.length) {
+                //добавим свободных мест.
+                notes = Arrays.copyOf(notes, notes.length * 2);
+                InitializeNotes();
+            }
+
             notes[notesCount].setText(text);
             notesCount++;
+
             result = true;
         }
         return result;
@@ -39,7 +41,7 @@ public class MyNotepad {
 
     public String getNoteText(int index) {
         String text = "";
-        if(index >= 0 && index < notesCount) {
+        if (index >= 0 && index < notesCount) {
             text = notes[index].getText();
         }
         return text;
@@ -47,34 +49,33 @@ public class MyNotepad {
 
     public boolean deleteNote(int index) {
         boolean result = false;
-        if(index >= 0 && index < notesCount) {
+        if (index >= 0 && index < notesCount) {
             for (int i = index + 1; i < notesCount; i++) {
-                    notes[i - 1] = notes[i];
+                notes[i - 1] = notes[i];
             }
             notesCount--;
 
-            if(notesCount <= 0.9 * (notes.length / 2)) {
-                //удалим лишние пустые элементы
-                //удаляем 90й элемент из массива из 200 - сокращаем массив до 100
+            if (notesCount <= (notes.length / 2) && minCount >= notes.length / 2) {
+                //удалим лишние пустые элементы, если занято менее половины. Не уполовинивать, если и так минималка
                 notes = Arrays.copyOf(notes, notes.length / 2);
             }
             result = true;
         }
         return result;
     }
+
     public boolean editNote(int index, String newText) {
         boolean result = false;
-        if(index >=0 && index < notesCount && !newText.equals("")) {
+        if (index >= 0 && index < notesCount && !newText.equals("")) {
             notes[index].setText(newText);
             result = true;
         }
         return result;
     }
 
-    private void InitializeNotes()
-    {
+    private void InitializeNotes() {
         for (int i = 0; i < notes.length; i++) {
-            if(null == notes[i]) {
+            if (null == notes[i]) {
                 notes[i] = new MyNote();
             }
         }
