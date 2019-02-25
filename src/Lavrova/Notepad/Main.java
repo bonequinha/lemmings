@@ -93,8 +93,11 @@ public class Main {
                         } else {
                             System.out.println("What text do you want to set?");
                             String editedText = scanInput.nextLine();
-                            mySecretNotepad.editNote(index, editedText);
-                            printSuccess();
+                            if(mySecretNotepad.editNote(index, editedText)) {
+                                printSuccess();
+                            } else {
+                                printAnError(commandErrors.OTHER);
+                            }
                         }
                     }
                     break;

@@ -65,7 +65,7 @@ public class MyNotepad {
 
     public boolean editNote(int index, String newText) {
         boolean result = false;
-        if (index >= 0 && index < notesCount && !EMPTY_TEXT.equals(newText)) {
+        if (checkIndex(index) && !EMPTY_TEXT.equals(newText)) {
             notes[index].setText(newText);
             result = true;
         }
