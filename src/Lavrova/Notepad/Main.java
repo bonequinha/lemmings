@@ -8,6 +8,7 @@ public class Main {
     enum commandErrors {
         EMPTY,
         NOTFOUND,
+        NOTNUMBER,
         OTHER
     }
 
@@ -132,11 +133,11 @@ public class Main {
                 notepad.getNotesCount());
         try {
             int getIndex = Integer.parseInt(scan.nextLine()) - 1;
-            if (getIndex >= 0 && getIndex < notepad.getNotesCount()) {
+            if (notepad.checkIndex(getIndex)) {
                 index = getIndex;
             }
         } catch (NumberFormatException e) {
-            //индекс уже -1
+            printAnError(commandErrors.NOTNUMBER);
         }
         return index;
     }
@@ -148,6 +149,9 @@ public class Main {
                 break;
             case NOTFOUND:
                 System.out.println("There is no such note's number.");
+                break;
+            case NOTNUMBER:
+                System.out.println("Did you give me letters? I need only numbers.");
                 break;
             default:
                 System.out.println("Oops. You did something wrong. Try again.");

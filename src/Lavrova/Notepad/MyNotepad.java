@@ -6,12 +6,11 @@ public class MyNotepad {
 
     private MyNote[] notes;
     private int notesCount;
-    private int minCount = 32;
+    private final int MIN_COUNT = 32;
+    private final String EMPTY_TEXT = "";
 
     public MyNotepad() {
-        notes = new MyNote[minCount];
-        InitializeNotes();
-        notesCount = 0;
+        notes = new MyNote[MIN_COUNT];
     }
 
     public int getNotesCount() {
@@ -24,13 +23,13 @@ public class MyNotepad {
 
     public boolean addNote(String text) {
         boolean result = false;
-        if (!text.equals("")) {
+        if (!EMPTY_TEXT.equals(text)) {
             if (notesCount == notes.length) {
                 //добавим свободных мест.
                 notes = Arrays.copyOf(notes, notes.length * 2);
-                InitializeNotes();
             }
-
+            //инициализируем новый элемент в момент создания заметки
+            notes[notesCount] = new MyNote();
             notes[notesCount].setText(text);
             notesCount++;
 
@@ -40,8 +39,8 @@ public class MyNotepad {
     }
 
     public String getNoteText(int index) {
-        String text = "";
-        if (index >= 0 && index < notesCount) {
+        String text = EMPTY_TEXT;
+        if (checkIndex(index)) {
             text = notes[index].getText();
         }
         return text;
@@ -49,13 +48,13 @@ public class MyNotepad {
 
     public boolean deleteNote(int index) {
         boolean result = false;
-        if (index >= 0 && index < notesCount) {
-            for (int i = index + 1; i < notesCount; i++) {
-                notes[i - 1] = notes[i];
-            }
+        if (checkIndex(index)) {
+            //сдвинем элементы после указанного на 1 левее
+            System.arraycopy(notes,index + 1, notes, index, notes.length - index - 1);
+
             notesCount--;
 
-            if (notesCount <= (notes.length / 2) && minCount >= notes.length / 2) {
+            if (notesCount <= (notes.length / 2) && MIN_COUNT <= notes.length / 2) {
                 //удалим лишние пустые элементы, если занято менее половины. Не уполовинивать, если и так минималка
                 notes = Arrays.copyOf(notes, notes.length / 2);
             }
@@ -66,18 +65,15 @@ public class MyNotepad {
 
     public boolean editNote(int index, String newText) {
         boolean result = false;
-        if (index >= 0 && index < notesCount && !newText.equals("")) {
+        if (index >= 0 && index < notesCount && !EMPTY_TEXT.equals(newText)) {
             notes[index].setText(newText);
             result = true;
         }
         return result;
     }
 
-    private void InitializeNotes() {
-        for (int i = 0; i < notes.length; i++) {
-            if (null == notes[i]) {
-                notes[i] = new MyNote();
-            }
-        }
+    public boolean checkIndex(int index) {
+        //проверяем, существует ли указанный индекс
+        return index >= 0 && index < notesCount;
     }
 }
