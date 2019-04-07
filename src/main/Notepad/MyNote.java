@@ -1,4 +1,4 @@
-package Lavrova.Notepad;
+package main.Notepad;
 
 public class MyNote {
     private String noteText;

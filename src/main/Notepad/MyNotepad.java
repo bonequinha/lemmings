@@ -1,4 +1,4 @@
-package Lavrova.Notepad;
+package main.Notepad;
 
 import java.util.Arrays;
 

@@ -1,4 +1,4 @@
-package Lavrova.Notepad;
+package main.Notepad;
 import java.util.Scanner;
 
 public class Main {
@@ -24,7 +24,7 @@ public class Main {
         System.out.println("INF         - to change note with the new text;");
         System.out.println("OUT         - to get out of here;");
 
-        System.out.println("SET - to create a new Notepad and do some default things.");
+        System.out.println("SET - to create a new main.Notepad and do some default things.");
 
         System.out.println("================");
 
@@ -106,7 +106,7 @@ public class Main {
                     for (int i = 0; i < defaultCount; i++) {
                         mySecretNotepad.addNote("Default note #" + (i + 1));
                     }
-                    System.out.println("Default Notes was added to Notepad:");
+                    System.out.println("Default Notes was added to main.Notepad:");
                     for (int i = 0; i < mySecretNotepad.getNotesCount(); i++) {
                         System.out.println(mySecretNotepad.getNoteText(i));
                     }
@@ -148,7 +148,7 @@ public class Main {
     private static void printAnError(commandErrors error) {
         switch (error) {
             case EMPTY:
-                System.out.println("Your Notepad is empty.");
+                System.out.println("Your main.Notepad is empty.");
                 break;
             case NOTFOUND:
                 System.out.println("There is no such note's number.");
