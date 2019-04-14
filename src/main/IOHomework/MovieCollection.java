@@ -1,11 +1,10 @@
-import java.util.ArrayList;
+import java.util.*;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Arrays;
 
 
 /**
@@ -22,44 +21,48 @@ import java.util.Arrays;
 **/
 
 public class MovieCollection implements java.io.Serializable {
-    private ArrayList<Movie> movies;
+    private HashSet<Movie> myCollection;
 
     public MovieCollection() {
-        movies = new ArrayList<>();
+        myCollection = new HashSet<>();
     }
-    public boolean setFromFile(final String fileName) {
+
+    public static MovieCollection setFromFile(final String fileName) {
+        MovieCollection temp = new MovieCollection();
         try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(fileName))) {
-            movies = (ArrayList<Movie>) inputStream.readObject();
+            temp = (MovieCollection) inputStream.readObject();
         } catch (FileNotFoundException e) {
             System.out.println("File " + fileName + " not found.");
-            return false;
         } catch (IOException e) {
             System.out.println("IO error.");
             e.printStackTrace();
-            return false;
         } catch (ClassNotFoundException e) {
             System.out.println("Class not found.");
-            return false;
         }
-        return true;
+        return temp;
     }
 
     public boolean addMovie(final Movie movie) {
-        if (!movies.contains(movie)) {
-            return movies.add(movie);
+        if (movie != null) {
+            if (!myCollection.contains(movie)) {
+                myCollection.add(movie);
+                return true;
+            }
         }
         return false;
     }
+
     public boolean removeMovie(final Movie movie) {
-        if (movies.contains(movie)) {
-            return movies.remove(movie);
+        if (movie != null && myCollection.contains(movie)) {
+            myCollection.remove(movie);
+            return true;
         }
         return false;
     }
 
     public boolean writeToFile(final String fileName) {
         try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(fileName))) {
-            outputStream.writeObject(movies);
+            outputStream.writeObject(this);
         } catch (IOException e) {
             System.out.println("There was an error occurred while IO.");
             e.printStackTrace();
@@ -69,29 +72,35 @@ public class MovieCollection implements java.io.Serializable {
     }
 
     public boolean editMovieTitle(final String editedMovie, final String newTitle) {
-        for (Movie movie : movies) {
-            if (movie.getTitle().equals(editedMovie)) {
-                movie.setTitle(newTitle);
-                return true;
+        if (!"".equals(editedMovie) && !"".equals(newTitle)) {
+            for(Movie temp:myCollection) {
+                if(temp.getTitle().equals(editedMovie)) {
+                    temp.setTitle(newTitle);
+                    return true;
+                }
             }
         }
         return false;
     }
 
-    public boolean addActor(final String name, final String title) {
-        for (Movie movie : movies) {
-            if (movie.getTitle().equals(title)) {
-                return movie.removeActor(name);
+    public int getMoviesCount() {
+        return myCollection.size();
+    }
+
+    public String[] getTitles() {
+        return myCollection.stream().map(entry -> entry.getTitle()).sorted().toArray(String[]::new);
+    }
+
+    public boolean addActorToMovie(final Actor actor, final String movie) {
+        if (null != actor && !"".equals(movie)) {
+            for (Movie temp : myCollection) {
+                if (temp.getTitle().equals(movie)) {
+                    temp.addActor(actor);
+                    return true;
+                }
             }
         }
         return false;
     }
-    public boolean removeActor(final String name, final String title) {
-        for (Movie movie : movies) {
-            if (movie.getTitle().equals(title)) {
-                return movie.removeActor(name);
-            }
-        }
-        return false;
-    }
+
 }
