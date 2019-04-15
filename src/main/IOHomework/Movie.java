@@ -1,5 +1,5 @@
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Represents one movie.
@@ -8,31 +8,41 @@ import java.util.Arrays;
  */
 public class Movie implements java.io.Serializable {
 
-        private String title;
-        private ArrayList<String> actors;
+    private String title;
+    private Set<Actor> actors;
 
-        public Movie(final String title, final ArrayList<String> actors) {
+    public Movie(final String title, final Set<Actor> actors) {
+        this.title = title;
+        this.actors = actors;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public boolean setTitle(final String title) {
+        if (!"".equals(title)) {
             this.title = title;
-            this.actors = actors;
+            return true;
         }
-        public String getTitle() {
-            return title;
-        }
-        public void setTitle(String title) {
-            this.title = title;
-        }
+        return false;
+    }
 
-        public boolean addActor(final String actor) {
-            if (!Arrays.asList(actors).contains(actor)) {
-                return actors.add(actor);
-            }
-            return false;
+    public boolean addActor(final Actor actor) {
+        if (actor != null && !actors.contains(actor)) {
+            return actors.add(actor);
         }
+        return false;
+    }
 
-        public boolean removeActor(final String actor) {
-            if (actors.contains(actor)) {
-                return actors.remove(actor);
-            }
-            return false;
+    public boolean removeActor(final Actor actor) {
+        if (actor != null && actors.contains(actor)) {
+            return actors.remove(actor);
         }
+        return false;
+    }
+
+    public Set getAllActors() {
+        return actors;
+    }
 }
