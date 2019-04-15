@@ -9,9 +9,9 @@ import java.util.Set;
 public class Movie implements java.io.Serializable {
 
     private String title;
-    private HashSet<Actor> actors;
+    private Set<Actor> actors;
 
-    public Movie(final String title, final HashSet<Actor> actors) {
+    public Movie(final String title, final Set<Actor> actors) {
         this.title = title;
         this.actors = actors;
     }

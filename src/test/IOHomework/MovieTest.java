@@ -17,7 +17,10 @@ public class MovieTest {
         actor2 = new Actor("Natalie Portman");
         actor3 = new Actor("Darth Vader");
 
-        movie1 = new Movie("Great fight", new HashSet<>() {{ add(actor1); add(actor2); }});
+        movie1 = new Movie("Great fight", new HashSet<>() {{
+            add(actor1);
+            add(actor2);
+        }});
     }
 
     @Test
@@ -27,37 +30,45 @@ public class MovieTest {
 
     @Test
     public void setTitleAccess() {
-        assertEquals(true, movie1.setTitle("Other title"));
+        assertTrue(movie1.setTitle("Other title"));
         assertSame("Other title", movie1.getTitle());
     }
+
     @Test
     public void setTitleEmpty() {
-        assertSame(false, movie1.setTitle(""));
+        assertFalse(movie1.setTitle(""));
     }
+
     @Test
     public void addActorSuccess() {
-        assertEquals(true, movie1.addActor(actor3));
+        assertTrue(movie1.addActor(actor3));
     }
+
     @Test
     public void addActorAlreadyAdded() {
-        assertEquals(false, movie1.addActor(actor1));
+        assertFalse(movie1.addActor(actor1));
     }
+
     @Test
     public void addActorNull() {
-        assertEquals(false, movie1.addActor(null));
+        assertFalse(movie1.addActor(null));
     }
+
     @Test
     public void removeActorSuccess() {
-        assertEquals(true, movie1.removeActor(actor1));
+        assertTrue(movie1.removeActor(actor1));
     }
+
     @Test
     public void removeActorFail() {
-        assertEquals(false, movie1.removeActor(actor3));
+        assertFalse(movie1.removeActor(actor3));
     }
+
     @Test
     public void removeActorNull() {
-        assertEquals(false, movie1.removeActor(null));
+        assertFalse(movie1.removeActor(null));
     }
+
     @Test
     public void getAllActors() {
         HashSet<Actor> temp = new HashSet<>();

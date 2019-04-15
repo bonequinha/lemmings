@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.stream.Collectors;
 
 
 /**
@@ -21,7 +22,7 @@ import java.io.IOException;
 **/
 
 public class MovieCollection implements java.io.Serializable {
-    private HashSet<Movie> myCollection;
+    private Set<Movie> myCollection;
 
     public MovieCollection() {
         myCollection = new HashSet<>();
@@ -87,8 +88,8 @@ public class MovieCollection implements java.io.Serializable {
         return myCollection.size();
     }
 
-    public String[] getTitles() {
-        return myCollection.stream().map(entry -> entry.getTitle()).sorted().toArray(String[]::new);
+    public List<String> getTitles() {
+        return myCollection.stream().map(entry -> entry.getTitle()).sorted().collect(Collectors.toList());
     }
 
     public boolean addActorToMovie(final Actor actor, final String movie) {
